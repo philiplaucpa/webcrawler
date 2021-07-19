@@ -31,9 +31,12 @@ public final class ConfigurationLoader{
    *
    * @return the loaded {@link CrawlerConfiguration}.
    */
-  public CrawlerConfiguration load() throws IOException{
+  public CrawlerConfiguration load(){
     try (BufferedReader reader = Files.newBufferedReader(this.path)) {
       return read(reader);
+    } catch (IOException ioException){
+      ioException.printStackTrace();
+      return null;
     }
   }
 
@@ -43,16 +46,21 @@ public final class ConfigurationLoader{
    * @param reader a Reader pointing to a JSON string that contains crawler configuration.
    * @return a crawler configuration
    */
-  public static CrawlerConfiguration read(Reader reader) throws IOException {
+  public static CrawlerConfiguration read(Reader reader) {
     // This is here to get rid of the unused variable warning.
     Objects.requireNonNull(reader);
 
     final ObjectMapper objectMapper = new ObjectMapper();
     objectMapper.disable(JsonParser.Feature.AUTO_CLOSE_SOURCE);
 
-    final CrawlerConfiguration.Builder crawlerConfigurationBuilder =
-            objectMapper.readValue(reader, CrawlerConfiguration.Builder.class);
+    try{
+      final CrawlerConfiguration.Builder crawlerConfigurationBuilder =
+              objectMapper.readValue(reader, CrawlerConfiguration.Builder.class);
 
-    return crawlerConfigurationBuilder.build();
+      return crawlerConfigurationBuilder.build();
+    } catch(IOException ioException){
+      ioException.printStackTrace();
+      return null;
+    }
   }
 }
