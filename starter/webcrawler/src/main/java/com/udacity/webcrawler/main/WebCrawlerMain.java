@@ -46,11 +46,11 @@ public final class WebCrawlerMain {
       resultWriter.write(w);
     }
 
-//    if (!config.getProfileOutputPath().isEmpty()) {
-//      profiler.writeData(Path.of(config.getProfileOutputPath()));
-//    } else {
-//      profiler.writeData(new OutputStreamWriter(System.out));
-//    }
+    if (!config.getProfileOutputPath().isEmpty()) {
+      profiler.writeData(Path.of(config.getProfileOutputPath()));
+    } else {
+      profiler.writeData(new OutputStreamWriter(System.out));
+    }
   }
 
   public static void main(String[] args) throws Exception {
